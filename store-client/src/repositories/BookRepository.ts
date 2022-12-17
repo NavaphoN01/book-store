@@ -6,7 +6,6 @@ import axios from 'axios';
 interface BookFilter {
     categoryId: string
   }  
-
 export class BookRepository implements IRepository<Book> {
     urlPrefix = config.remoteRepositoryUrlPrefix
     async getAll(filter: BookFilter): Promise<Book[] | null> {
