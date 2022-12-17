@@ -9,6 +9,7 @@ import BookDetail from './components/BookDetail'
 function App() {
   const [categoryList, setCategoryList] = useState<Category[]>([])
   const [bookList, setBookList] = useState<Book[]>([])
+  const [filter, setFilter] = useState<string>('')
 
   const fetchCategoryList = async () => {
     const result = await Repo.categories.getAll()
@@ -17,7 +18,7 @@ function App() {
     }
   }
   const fetchBookList = async () => {
-    const result = await Repo.books.getAll()
+    const result = await Repo.books.getAll({categoryId: filter})
     if (result) {
       setBookList(result)
     }
@@ -26,12 +27,15 @@ function App() {
   useEffect(() => {
     fetchCategoryList()
     fetchBookList()
-  },)
+  },[filter])
 
   return (
     <div>
       <div>
+      <select onChange={e => setFilter(e.target.value)}>
+          <option value={''}>All</option>
     {categoryList.map(category => <option key={category.id} value={category.id}>{category.title}</option>)}
+    </select>
     <hr />
     </div>
     {bookList.map(book =>
